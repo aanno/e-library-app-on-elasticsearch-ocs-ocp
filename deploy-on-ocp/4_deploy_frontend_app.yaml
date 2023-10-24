@@ -61,7 +61,7 @@ objects:
             - containerPort: 8080
             volumeMounts:
             - name: config-volume
-              mountPath: /usr/share/nginx/html/env            
+              mountPath: /usr/share/nginx/html/env
 parameters:
   - name: OC_PROJECT
     displayName: project/namespace name
