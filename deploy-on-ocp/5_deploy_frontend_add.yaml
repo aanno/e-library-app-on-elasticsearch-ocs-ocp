@@ -1,0 +1,137 @@
+# https://gist.github.com/exaV/978c4d9ac66b2940da141340f08bb82a
+apiVersion: v1
+kind: Template
+metadata:
+  name: nginx-template
+  annotations:
+    description: "Run a simple nginx server that reads its config from a configMap. Needs rolling update for changes to take effect"
+    tags: "webserver,nginx"
+objects:
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+    spec:
+      replicas: 1
+      selector:
+        app: ${NAME}
+        deploymentconfig: ${NAME}
+      strategy:
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            app: ${NAME}
+            deploymentconfig: ${NAME}
+        spec:
+          containers:
+            - name: nginx
+              image: ${NGINX_IMAGE}:${NGINX_VERSION}
+              imagePullPolicy: Always
+              ports:
+                - containerPort: 8081
+                  protocol: TCP
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              volumeMounts:
+                - name: nginx-conf-volume
+                  mountPath: /etc/nginx/nginx.conf
+                  subPath: nginx.conf
+          volumes:
+            - name: nginx-conf-volume
+              configMap:
+                name: ${NAME}-nginx-config
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+      triggers:
+        - type: "ConfigChange"
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+    spec:
+      ports:
+        - port: 8081
+          protocol: TCP
+          targetPort: 8081
+          name: http
+      selector:
+        app: ${NAME}
+        deploymentconfig: ${NAME}
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+    spec:
+      port:
+        targetPort: 8081
+      to:
+        kind: Service
+        name: ${NAME}
+      tls:
+        termination: edge
+      weight: 100
+      wildcardPolicy: None
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: ${NAME}-nginx-config
+    data:
+      nginx.conf: ${NGINX_CONFIG}
+parameters:
+  - name: NAME
+    description: The name for the deployment, service and route
+    value: nginx
+  - name: NGINX_VERSION
+    description: The version (tag) of the used nginx image
+    value: latest
+  - name: NGINX_IMAGE
+    description: The image to be used (defaults to twalter/openshift-nginx)
+    value: twalter/openshift-nginx
+  - name: NGINX_CONFIG
+    description: Nginx config to be used. You will probably want to edit the server section
+    value: |
+      worker_processes auto;
+      pid /run/nginx.pid;
+      events {
+          worker_connections 768;
+      }
+      http {
+              sendfile on;
+              tcp_nopush on;
+              tcp_nodelay on;
+              keepalive_timeout 65;
+              types_hash_max_size 2048;
+              include /etc/nginx/mime.types;
+              default_type application/octet-stream;
+              ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+              ssl_prefer_server_ciphers on;
+              server {
+                listen 8081;
+                location / {
+                  return 200 'Nginx is up and running';
+                  add_header Content-Type text/plain;
+                }
+              }
+              log_format upstreamlog '[$time_local] $remote_addr - $remote_user - $server_name to: $upstream_addr: $request request_time $request_time' status $status upstream-status $upstream_status;
+              access_log /var/log/nginx/access.log upstreamlog;
+              error_log /var/log/nginx/error.log;
+              gzip on;
+              gzip_disable "msie6";
+      }
+

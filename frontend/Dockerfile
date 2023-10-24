@@ -10,4 +10,6 @@ WORKDIR /usr/share/nginx/html
 #    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
 
 
-COPY . ./
+COPY index.html styles.css ./
+COPY env env
+COPY conf.d /etc/nginx/conf.d
