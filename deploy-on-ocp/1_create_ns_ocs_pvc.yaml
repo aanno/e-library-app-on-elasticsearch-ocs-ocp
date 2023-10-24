@@ -12,7 +12,7 @@ metadata:
   name: ocs-pv-claim
   labels:
     name: "e-library"
-  namespace: "e-library"  
+  namespace: ${OC_PROJECT}
 spec:
   accessModes:
   - ReadWriteOnce

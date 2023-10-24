@@ -5,7 +5,7 @@ metadata:
   name: e-library-backend-api-service
   labels:
     name: "e-library-backend-api"
-  namespace: "e-library"  
+  namespace: ${OC_PROJECT}
 spec:
   ports:
   - port: 3000
@@ -24,7 +24,7 @@ metadata:
   name: e-library-backend-api-route
   labels:
     name: "e-library-backend-api"
-  namespace: "e-library"  
+  namespace: ${OC_PROJECT}
 spec:
   port:
     targetPort: 3000
@@ -39,7 +39,7 @@ metadata:
   name: e-library-backend-api
   labels:
     name: "e-library-backend-api"
-  namespace: "e-library"  
+  namespace: ${OC_PROJECT}
 spec:
   containers:
   - image: karansingh/e-library-backend-api-ks:latest
