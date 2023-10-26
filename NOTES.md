@@ -1,0 +1,24 @@
+# e-library
+
+* https://blog.patricktriest.com/
+* https://search.patricktriest.com/
+* https://blog.patricktriest.com/text-search-docker-elasticsearch/
+
+## Debugging
+
+* [CORS and curl](https://reqbin.com/req/c-taimahsa/curl-cors-request)
+* https://stackoverflow.com/questions/45975135/access-control-origin-header-error-using-axios
+
+### ES server
+
+curl -v -H "Origin: https://example.reqbin.com" -X POST http://10.131.10.63:9200/_search
+
+* https://mindmajix.com/elasticsearch/curl-syntax-with-examples
+
+### backend
+
+curl -v -H "Origin: https://example.reqbin.com" -X POST   http://e-library-backend-api-route-aanno-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/
+
+curl -g -v -H "Origin: http://e-library-frontend-aanno-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com" -XGET  http://e-library-backend-api-route-aanno-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/search
+
+
