@@ -45,7 +45,7 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 80
+    targetPort: 8080
   selector:
     run: e-library-frontend
 status:
@@ -89,10 +89,10 @@ spec:
         configMap:
           name: env.js       
       containers:
-      - image: karansingh/e-library-frontend-ks:latest
+      - image: docker.io/aanno/e-library-frontend:latest
         name: e-library-frontend      
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         volumeMounts:
         - name: config-volume
           mountPath: /usr/share/nginx/html/env            
