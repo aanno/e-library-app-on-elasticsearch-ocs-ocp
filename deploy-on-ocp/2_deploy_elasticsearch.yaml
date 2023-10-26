@@ -5,7 +5,7 @@ metadata:
   name: elasticsearch
   labels:
     name: "e-library-elasticsearch"
-  namespace: "e-library"  
+  namespace: "aanno-dev"
 spec:
   ports:
   - port: 9200
@@ -23,7 +23,7 @@ metadata:
   name: elasticsearch
   labels:
     run: "elasticsearch"
-  namespace: "e-library"  
+  namespace: "aanno-dev"
 spec:
   replicas: 1
   selector:
