@@ -41,7 +41,7 @@ spec:
           persistentVolumeClaim:
             claimName: ocs-pv-claim    
       containers:
-      - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+      - image: docker.io/elasticsearch:8.10.2
         name: elasticsearch
         env:
           - name: "bootstrap.memory_lock"
@@ -49,7 +49,23 @@ spec:
           - name: "ES_JAVA_OPTS"
             value: "-Xms512m -Xmx512m"
           - name: "discovery.type"
-            value: "single-node"         
+            value: "single-node"
+          # see https://www.elastic.co/guide/en/enterprise-search/current/analytics-cors-proxy.html#analytics-cors-proxy-enable-cors-elasticsearch
+          - name: "http.cors.allow-origin"
+            value: '"*"'
+          - name: "http.cors.enabled"
+            value: "true"
+          - name: "http.cors.allow-credentials"
+            value: "true"
+          - name: "http.cors.allow-methods"
+            value: "OPTIONS, POST"
+          - name: "http.cors.allow-headers"
+            value: "X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept"
+          # https://discuss.elastic.co/t/disable-authentification-for-elasticsearch/304862/3
+          - name: "xpack.security.enabled"
+            value: "false"
+          - name: "xpack.security.enrollment.enabled"
+            value: "false"
         ports:
         - containerPort: 9200
         - containerPort: 9300
