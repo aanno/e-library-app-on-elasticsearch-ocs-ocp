@@ -41,7 +41,10 @@ spec:
           persistentVolumeClaim:
             claimName: ocs-pv-claim    
       containers:
-      - image: docker.io/elasticsearch:8.10.2
+      # - image: docker.io/elasticsearch:8.10.2
+      # dangerous, see https://www.docker.elastic.co/r/elasticsearch/elasticsearch:6.8.23
+      # - image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
+      - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
         name: elasticsearch
         env:
           - name: "bootstrap.memory_lock"
