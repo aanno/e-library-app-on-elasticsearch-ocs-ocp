@@ -13,7 +13,10 @@
 
 curl -v -H "Origin: https://example.reqbin.com" -X POST http://10.131.10.63:9200/_search
 
+curl -v -H "Origin: https://example.reqbin.com" -X POST http://elasticsearch:9200/book/_search -d '{ "query": { "match_all": {} } }' -H 'Content-Type: application/json'
+
 * https://mindmajix.com/elasticsearch/curl-syntax-with-examples
+* [no mappings in es >=7](https://logz.io/blog/elasticsearch-mapping/)
 
 ### backend
 
