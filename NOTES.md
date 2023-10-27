@@ -31,7 +31,7 @@ curl -G -v -H "Origin: http://e-library-frontend-aanno-dev.apps.sandbox-m2.ll9k.
 
 Im Browser: http://e-library-backend-api-route-aanno-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/search?term=hello&offset=0
 
-### frontent 
+### frontend
 
 $ oc expose service e-library-frontend
 route.route.openshift.io/e-library-frontend exposed
