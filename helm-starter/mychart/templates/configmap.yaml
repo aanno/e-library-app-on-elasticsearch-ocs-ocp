@@ -4,9 +4,5 @@ metadata:
   name: {{ .Release.Name }}-configmap
 data:
   myvalue: "Hello World"
-  capabilities: "{{ .Capabilities }}"
-  chart: "{{ .Chart }}"
-  template: "{{ .Template }}"
-  values: "{{ .Values }}"
-  drink: {{ .Values.favorite.drink }}
-  food: {{ .Values.favorite.food }}
+  drink: {{ .Values.favorite.drink | default (printf "%s-tea" (include "mychart-fullname" "test")) }}
+  food: {{ .Values.favorite.food | upper | quote }}
