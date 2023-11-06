@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-kubernetes-tools.vscode-kubernetes-tools",
+			"redhat.vscode-openshift-connector",
+			"redhat.vscode-openshift-extension-pack",
+			"tim-koehler.helm-intellisense",
+			"vadzimnestsiarenka.helm-template-preview-and-more"
+		],
+		"unwantedRecommendations": [
+
+		]
+	}
+}
