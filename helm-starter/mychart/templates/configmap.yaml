@@ -2,7 +2,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
+  {{- template "mychart.labels" . }}
+  labels:
+{{ include "mychart.app" . | indent 4 }}
 data:
   myvalue: "Hello World"
-  drink: {{ .Values.favorite.drink | default (printf "%s-tea" (include "mychart-fullname" "test")) }}
-  food: {{ .Values.favorite.food | upper | quote }}
+  drink1: {{ .Values.favorite.drink | default (printf "%s-tea" (include "mychart-fullname" "test")) }}
+  food1: {{ .Values.favorite.food | upper | quote }}
+  {{- range $key, $val := .Values.favorite }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+# include is a function and could be piped (whereas template is not)
+{{ include "mychart.app" . | indent 2 }}

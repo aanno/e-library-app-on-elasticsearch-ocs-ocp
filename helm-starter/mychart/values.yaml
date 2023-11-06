@@ -5,5 +5,5 @@
 default:
   drink: ice
 favorite:
-  # drink: coffee
+  drink: coffee
   food: pizza
