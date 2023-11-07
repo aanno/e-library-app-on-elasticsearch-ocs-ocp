@@ -18,6 +18,11 @@ volume:
 elasticsearch:
   enabled: true
 
+backend:
+  enabled: true
+
+frontend:
+  enabled: true
 
 replicaCount: 1
 
