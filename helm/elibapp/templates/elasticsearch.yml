@@ -62,10 +62,11 @@ spec:
           - name: "http.cors.allow-headers"
             value: "X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept"
           # https://discuss.elastic.co/t/disable-authentification-for-elasticsearch/304862/3
-          - name: "xpack.security.enabled"
-            value: "false"
-          - name: "xpack.security.enrollment.enabled"
-            value: "false"
+          # es 8.x stuff - not known to es 6.x
+          #- name: "xpack.security.enabled"
+          #  value: "false"
+          #- name: "xpack.security.enrollment.enabled"
+          #  value: "false"
         ports:
         - containerPort: 9200
         - containerPort: 9300
