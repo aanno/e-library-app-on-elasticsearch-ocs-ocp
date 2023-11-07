@@ -1,0 +1,16 @@
+{{- if .Values.namespace.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ocs-pv-claim
+  labels:
+    name: "e-library"
+  namespace: .Values.namespace.name
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  # storageClassName: ocs-storagecluster-ceph-rbd
+{{- end }}

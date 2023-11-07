@@ -2,6 +2,18 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Error: rendered manifests contain a resource that already exists. Unable to continue with install: could not get information about the resource Namespace ".Values.namespace.name" in namespace "": namespaces ".Values.namespace.name" is forbidden: User "aanno" cannot get resource "namespaces" in API group "" in the namespace ".Values.namespace.name"
+# helm.go:84: [debug] namespaces ".Values.namespace.name" is forbidden: User "aanno" cannot get resource "namespaces" in API group "" in the namespace ".Values.namespace.name"
+# could not get information about the resource Namespace ".Values.namespace.name" in namespace ""
+
+namespace:
+  # in sandbox there is only one ns allowed and `oc get namespaces` is forbidden (for devs)
+  enabled: false
+  name: aanno-dev
+
+volume:
+  enabled: true
+  name: ocs-pv-claim
 
 
 replicaCount: 1
