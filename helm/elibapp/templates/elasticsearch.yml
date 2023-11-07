@@ -1,0 +1,75 @@
+{{- if .Values.elasticsearch.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    name: "e-library-elasticsearch"
+  namespace: {{ .Values.namespace.name }}
+spec:
+  ports:
+  - port: 9200
+    protocol: TCP
+    targetPort: 9200
+  selector:
+    run: elasticsearch
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  labels:
+    run: "elasticsearch"
+  namespace: {{ .Values.namespace.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: "elasticsearch"
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: "elasticsearch"
+    spec:
+      volumes:
+        - name: ocs-pv-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.name }}
+      containers:
+      # - image: docker.io/elasticsearch:8.10.2
+      # dangerous, see https://www.docker.elastic.co/r/elasticsearch/elasticsearch:6.8.23
+      # - image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
+      - image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+        name: elasticsearch
+        env:
+          - name: "bootstrap.memory_lock"
+            value: "true"
+          - name: "ES_JAVA_OPTS"
+            value: "-Xms512m -Xmx512m"
+          - name: "discovery.type"
+            value: "single-node"
+          # see https://www.elastic.co/guide/en/enterprise-search/current/analytics-cors-proxy.html#analytics-cors-proxy-enable-cors-elasticsearch
+          - name: "http.cors.allow-origin"
+            value: '"*"'
+          - name: "http.cors.enabled"
+            value: "true"
+          - name: "http.cors.allow-credentials"
+            value: "true"
+          - name: "http.cors.allow-methods"
+            value: "OPTIONS, POST"
+          - name: "http.cors.allow-headers"
+            value: "X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept"
+          # https://discuss.elastic.co/t/disable-authentification-for-elasticsearch/304862/3
+          - name: "xpack.security.enabled"
+            value: "false"
+          - name: "xpack.security.enrollment.enabled"
+            value: "false"
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
+        volumeMounts:
+          - mountPath: "/usr/share/elasticsearch/data"
+            name: ocs-pv-storage
+{{- end }}

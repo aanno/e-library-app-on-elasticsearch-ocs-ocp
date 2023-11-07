@@ -15,6 +15,9 @@ volume:
   enabled: true
   name: ocs-pv-claim
 
+elasticsearch:
+  enabled: true
+
 
 replicaCount: 1
 
