@@ -29,7 +29,6 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         run: "elasticsearch"
     spec:

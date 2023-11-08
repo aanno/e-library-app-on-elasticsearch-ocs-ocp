@@ -32,28 +32,36 @@ spec:
     name: e-library-backend-api-service
     weight: 100
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: e-library-backend-api
+  namespace: {{ .Values.namespace.name }}
   labels:
     name: "e-library-backend-api"
-  namespace: "aanno-dev"
+    namespace: {{ .Values.namespace.name }}
+    run: "backend"
 spec:
-  containers:
-  - image: karansingh/e-library-backend-api-ks:latest
-    name: e-library-backend-api
-    env:
-      - name: "NODE_ENV"
-        value: "prod"
-      - name: "ES_HOST"
-        value: "elasticsearch"
-      - name: "PORT"
-        value: "3000"    
-    ports:
-    - containerPort: 3000
-    - containerPort: 9229    
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Never
+  replicas: 1
+  selector:
+    matchLabels:
+      run: "backend"
+  template:
+    metadata:
+      labels:
+        run: "backend"
+    spec:
+      containers:
+      - image: karansingh/e-library-backend-api-ks:latest
+        name: e-library-backend-api
+        env:
+          - name: "NODE_ENV"
+            value: "prod"
+          - name: "ES_HOST"
+            value: "elasticsearch"
+          - name: "PORT"
+            value: "3000"    
+        ports:
+        - containerPort: 3000
+        - containerPort: 9229    
 {{- end }}
